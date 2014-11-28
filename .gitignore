@@ -1,0 +1,12 @@
+#Object files
+src/*.o
+teensy/*.o
+
+#Dependency files
+src/*.d
+teensy/*.d
+
+#Output
+/*.a
+/*.elf
+/*.hex
