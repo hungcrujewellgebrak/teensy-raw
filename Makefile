@@ -95,13 +95,18 @@ $(TARGET).elf: $(OBJS) $(LDSCRIPT) core.a
 -include $(OBJS:.o=.d) $(CORE_OBJS:.o=.d)
 
 clean:
+ifeq ($(OS),Windows_NT)
+	del /q src\*.o >nul 2>&1
+	del /q src\*.d >nul 2>&1
 	del /q teensy3\*.o >nul 2>&1
 	del /q teensy3\*.d >nul 2>&1
 	del core.a >nul 2>&1
-	del /q src\*.o >nul 2>&1
-	del /q src\*.d >nul 2>&1
 	del $(TARGET).elf >nul 2>&1
 	del $(TARGET).hex >nul 2>&1
-#	rm -f $(TARGET).elf $(TARGET).hex
-
+else
+	rm -f src/*.d src/*.o
+	rm -f teensy3/*.o teensy3/*.d
+	rm -f core.a
+	rm -f $(TARGET).elf $(TARGET).hex
+endif
 
