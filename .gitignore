@@ -1,10 +1,10 @@
 #Object files
 src/*.o
-teensy/*.o
+teensy3/*.o
 
 #Dependency files
 src/*.d
-teensy/*.d
+teensy3/*.d
 
 #Output
 /*.a
