@@ -12,14 +12,17 @@ Usage
 
 Put your C/C++ sources in `src`. Makefile compiles C files using C99 standard (with GNU extensions) and C++ files using the C++0x standard (also with GNU extensions).
 
+On platforms that require it, copy the `49-teensy.rules` from your platform's tools directory to `/etc/udev/rules.d` before plugging in the teensy.
+
 - `make` will compile the current project, rebuilding the required files and producing both an .elf and a .hex file.
 - `make upload` will open the launcher and attempt to upload the .hex file onto a connected teensy.
 - `make clean` will remove all the build output and intermediate files.
 
 Sources
 -------
-- The `teensy3` and `tools` directories are taken from [Teensyduino](http://www.pjrc.com/teensy/td_download.html)
-- The `Makefile` is the moved from `teensy3/Makefile` and modified to fit.
+- The `teensy3` and `tools` directories are taken from the [Teensyduino](http://www.pjrc.com/teensy/td_download.html) installer.
+- The `49-teensy.rules` file for linux installs is taken from the [Teensyduino](http://www.pjrc.com/teensy/td_download.html) web page.
+- The `Makefile` is the moved from `teensy3/Makefile` above and modified.
 
 Credits
 -------
