@@ -5,7 +5,7 @@ This is a raw teensy 3.1 build environment, based on Teensyduino 1.20.
 
 There are already several of these around, but usually eschew windows support and/or do not build a core library causing unnecessarily large firmware images.
 
-Windows is currently supported, other (Unixy) OSes should work but the tools have yet to be included.
+Linux (x86_64) and Windows are currently supported, other (Unixy) OSes should work with the correct tools and slight modifications to `Makefile`.
 
 Usage
 -----
