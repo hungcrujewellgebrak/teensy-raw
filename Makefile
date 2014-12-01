@@ -24,7 +24,23 @@ OPTIONS += -DKB_DEBUG
 #************************************************************************
 
 # path location for Teensy Loader, teensy_post_compile and teensy_reboot
-TOOLSPATH = $(CURDIR)/tools
+TOOLSPATH_BASE = $(CURDIR)/tools
+
+ifeq ($(OS),Windows_NT)
+	TOOLSPATH = $(TOOLSPATH_BASE)/windows
+else
+	UNAME_S := $(shell uname -s)
+	UNAME_M := $(shell uname -m)
+    ifeq ($(UNAME_S),Linux)
+		ifeq ($(UNAME_M),x86_64)
+			TOOLSPATH = $(TOOLSPATH_BASE)/linux64
+		else
+			$(error Unsupported architecture)
+		endif
+	else
+		$(error Unsupported OS)
+    endif
+endif
 
 COREPATH = teensy3
 
