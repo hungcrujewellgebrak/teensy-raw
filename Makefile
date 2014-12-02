@@ -8,8 +8,6 @@ OPTIONS = -DF_CPU=72000000 -DUSB_SERIAL -DLAYOUT_US_ENGLISH
 # options needed by many Arduino libraries to configure for Teensy 3.1
 OPTIONS += -D__MK20DX256__ -DARDUINO=106 -DTEENSYDUINO=120
 
-OPTIONS += -DKB_DEBUG
-
 # Other Makefiles and project templates for Teensy 3.x:
 #
 # https://github.com/apmorton/teensy-template
@@ -38,7 +36,11 @@ else
 			$(error Unsupported architecture)
 		endif
 	else
-		$(error Unsupported OS)
+		ifeq ($(UNAME_S),Darwin)
+			TOOLSPATH = $(TOOLSPATH_BASE)/mac
+		else
+			$(error Unsupported OS)
+		endif
     endif
 endif
 
