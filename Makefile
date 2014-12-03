@@ -67,7 +67,7 @@ CFLAGS = -std=gnu99
 
 # linker options
 LDSCRIPT = $(COREPATH)/mk20dx256.ld
-LDFLAGS = -Os -Wl,--gc-sections -mcpu=cortex-m4 -mthumb -T$(LDSCRIPT)
+LDFLAGS = -Os -Wl,--gc-sections -mcpu=cortex-m4 -mthumb -larm_cortexM4l_math -T$(LDSCRIPT)
 
 # additional libraries to link
 LIBS = -lm

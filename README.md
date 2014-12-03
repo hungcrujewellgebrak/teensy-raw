@@ -24,6 +24,10 @@ Sources
 - The `49-teensy.rules` file for Linux installs is taken from the [Teensyduino](http://www.pjrc.com/teensy/td_download.html) web page.
 - The `Makefile` is the moved from `teensy3/Makefile` above and modified.
 
+Caveats
+-------
+- The PJRC library code does not implement the [newlib](http://sourceware.org/newlib) `_write` syscall in `teensy/mk20dx128.c` which means that any attempt to use code that references `stdout` or `stderr` will fail to compile with a link error.
+
 Credits
 -------
 - [PJRC](https://www.pjrc.com/) for the awesome teensy, open-sourcing the core libraries, and generally encouraging people.
