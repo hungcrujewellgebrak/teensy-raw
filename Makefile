@@ -91,8 +91,7 @@ CORE_OBJS := $(CORE_C_FILES:.c=.o) $(CORE_CPP_FILES:.cpp=.o)
 
 LIB_C_FILES := $(wildcard $(LIBRARYPATH)/*.c)
 LIB_CPP_FILES := $(wildcard $(LIBRARYPATH)/*.cpp)
-LIB_OBJS := $(CORE_C_FILES:.c=.o) $(CORE_CPP_FILES:.cpp=.o) 
-
+LIB_OBJS := $(LIB_C_FILES:.c=.o) $(LIB_CPP_FILES:.cpp=.o) 
 
 # the actual makefile rules (all .o files built by GNU make's default implicit rules)
 
@@ -108,15 +107,15 @@ core.a: $(CORE_OBJS)
 libraries.a: $(LIB_OBJS)
 	$(AR) rcs $@ $(LIB_OBJS)
 
-$(TARGET).elf: $(OBJS) $(LDSCRIPT) core.a
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) core.a $(wildcard libraries.a)
+$(TARGET).elf: $(OBJS) $(LDSCRIPT) core.a libraries.a
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) core.a libraries.a
 
 %.hex: %.elf
 	$(SIZE) $<
 	$(OBJCOPY) -O ihex -R .eeprom $< $@
 
 # compiler generated dependency info
--include $(OBJS:.o=.d) $(CORE_OBJS:.o=.d)
+-include $(OBJS:.o=.d) $(LIB_OBJS:.o=.d) $(CORE_OBJS:.o=.d)
 
 clean:
 ifeq ($(OS),Windows_NT)

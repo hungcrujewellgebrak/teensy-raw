@@ -3,14 +3,16 @@ Teensy 3.1 Raw Build Environment
 
 This is a raw teensy 3.1 build environment, based on Teensyduino 1.20.
 
-There are already several of these around, but usually eschew Windows support and/or do not build a core library causing unnecessarily large firmware images.
+There are already several of these around, but usually eschew Windows support and/or do not build static library files causing unnecessarily large firmware images due to dead code being included.
 
 Linux (x86_64), Mac and Windows are all supported, other (Unixy) OSes should work with the correct tools and slight modifications to `Makefile`.
 
 Usage
 -----
 
-Put your C/C++ sources in `src`. Makefile compiles C files using C99 standard (with GNU extensions) and C++ files using the C++0x standard (also with GNU extensions).
+Put your C/C++ sources in `src` and put your Arduino libraries in 'libraries'.
+
+`Makefile` compiles C files using C99 standard (with GNU extensions) and C++ files using the C++0x standard (also with GNU extensions).
 
 On Linux that require it, copy the `49-teensy.rules` from your platform's tools directory to `/etc/udev/rules.d` before plugging in the teensy.
 
