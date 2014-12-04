@@ -46,7 +46,7 @@ endif
 
 COREPATH = teensy3
 
-# path location for Arduino libraries (currently not used)
+# path location for Arduino libraries
 LIBRARYPATH = libraries
 
 # path location for the arm-none-eabi compiler
@@ -81,14 +81,17 @@ OBJCOPY = $(abspath $(COMPILERPATH))/arm-none-eabi-objcopy
 SIZE = $(abspath $(COMPILERPATH))/arm-none-eabi-size
 
 # automatically create lists of the sources and objects
-# TODO: this does not handle Arduino libraries yet...
+C_FILES := $(wildcard src/*.c)
+CPP_FILES := $(wildcard src/*.cpp)
+OBJS := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o)
+
 CORE_C_FILES := $(wildcard $(COREPATH)/*.c)
 CORE_CPP_FILES := $(wildcard $(COREPATH)/*.cpp)
 CORE_OBJS := $(CORE_C_FILES:.c=.o) $(CORE_CPP_FILES:.cpp=.o) 
 
-C_FILES := $(wildcard src/*.c)
-CPP_FILES := $(wildcard src/*.cpp)
-OBJS := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o)
+LIB_C_FILES := $(wildcard $(LIBRARYPATH)/*.c)
+LIB_CPP_FILES := $(wildcard $(LIBRARYPATH)/*.cpp)
+LIB_OBJS := $(CORE_C_FILES:.c=.o) $(CORE_CPP_FILES:.cpp=.o) 
 
 
 # the actual makefile rules (all .o files built by GNU make's default implicit rules)
@@ -100,10 +103,13 @@ upload: $(TARGET).hex
 	-$(abspath $(TOOLSPATH))/teensy_reboot
 
 core.a: $(CORE_OBJS)
-	$(AR) rcs core.a $(CORE_OBJS)
+	$(AR) rcs $@ $(CORE_OBJS)
+
+libraries.a: $(LIB_OBJS)
+	$(AR) rcs $@ $(LIB_OBJS)
 
 $(TARGET).elf: $(OBJS) $(LDSCRIPT) core.a
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) core.a
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) core.a $(wildcard libraries.a)
 
 %.hex: %.elf
 	$(SIZE) $<
@@ -118,13 +124,17 @@ ifeq ($(OS),Windows_NT)
 	del /q src\*.d >nul 2>&1
 	del /q teensy3\*.o >nul 2>&1
 	del /q teensy3\*.d >nul 2>&1
+	del /q libraries\*.o >nul 2>&1
+	del /q libraries\*.d >nul 2>&1
 	del core.a >nul 2>&1
+	del libraries.a >nul 2>&1
 	del $(TARGET).elf >nul 2>&1
 	del $(TARGET).hex >nul 2>&1
 else
 	rm -f src/*.d src/*.o
 	rm -f teensy3/*.o teensy3/*.d
-	rm -f core.a
+	rm -f libraries/*.o libraries/*.d
+	rm -f core.a libraries.a
 	rm -f $(TARGET).elf $(TARGET).hex
 endif
 
